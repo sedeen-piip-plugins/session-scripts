@@ -1,18 +1,11 @@
 #!/usr/bin/env python3
 
-# author_join.py
-# Join session files created by different authors into a single file.
-# Set the source directory to a folder that contains folders for each author.
-# The name of the author (surrounded by square brackets) will be appended to
-# the description fields of their overlays.
-# Example directory structure:
-
-
 import argparse
 import copy
 import os
 import re
 import xml.etree.ElementTree as ET
+
 
 T10_COLORS = ["#4e79a7ff",
               "#59a14fff",

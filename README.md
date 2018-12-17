@@ -1,5 +1,5 @@
 # session-scripts
-A collection of Python scripts for working with Sedeen session files.
+A collection of Python scripts for working with Sedeen session files. Use Python 3 to run these tools.
 
 ## Author Join
 
