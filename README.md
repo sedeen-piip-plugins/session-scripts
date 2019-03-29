@@ -38,4 +38,36 @@ path\to\data
 
 The `-v` option turns on verbose output so you can debug any problems. The `-c` option strips the existing colors in each session file and adds new colors to help distinguish annotations by author.
 
+## Author Split
 
+This script splits session files generated using `author_join.py`. 
+
+```
+usage: Split sedeen session files produced by multiple authors 
+       [-h] [-v] input
+
+positional arguments:
+  input          path to session file to split
+
+optional arguments:
+  -h, --help     show this help message and exit
+  -v, --verbose  increase output verbosity
+  ```
+
+Here's an example usage:
+
+```
+python scripts\author_split.py path\to\file.session.xml -v
+```
+
+Assuming there are annotations from Dr. House, Dr Wilson, and Dr. Taub, this will create the following folders next to the file:
+```
+path\to\
+├── file.session.xml
+├── Dr. House\
+│   └── file.session.xml
+├── Dr. Wilson\
+│   └── file.session.xml
+└── Dr. Taub\
+    └── file.session.xml
+```
