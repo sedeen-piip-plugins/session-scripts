@@ -49,24 +49,50 @@ authors = set()
 image = root.find('image')
 overlay = image.find('overlays')
 for graphic in overlay.findall('graphic'):
-    m = author_finder.search(graphic.attrib['description'])
-    author_name = m.group(0)
-    if args.verbose:
-        print(F"found author {author_name}")
-    authors.add(m.group(0))
+    if 'description' in graphic.attrib:
+        description_field = graphic.attrib['description']
+    else:
+        description_field = ""
+    m = author_finder.search(description_field)
+    if not description_field or not m or len(m.groups()) is 0:
+        if args.verbose:
+            print("found overlay with no author")
+        authors.add("")
+    else:
+        author_name = m.group(0)
+        if args.verbose:
+            print(F"found author {author_name}")
+        authors.add(m.group(0))
 
 # create new session file for each author
 for author in authors:
-    if args.verbose:
-        print(F"building session file for {author}")
+    unassigned = False
+    if not author:
+        author = "unassigned"
+        unassigned = True
+        if args.verbose:
+            print("building session file for unassigned overlays")
+    else:
+        if args.verbose:
+            print(F"building session file for {author}")
     t = copy.deepcopy(tree)
     r = t.getroot()
     image = r.find('image')
     overlay = image.find('overlays')
     for graphic in overlay.findall('graphic'):
-        m = author_finder.search(graphic.attrib['description'])
-        if author != m.group(0):
-            overlay.remove(graphic)
+        if 'description' in graphic.attrib:
+            description_field = graphic.attrib['description']
+        else:
+            description_field = ""
+        m = author_finder.search(description_field)
+        print(F"description: {description_field}")
+        if unassigned:
+            if m:
+                # remove all assigned graphics
+                overlay.remove(graphic)
+        else:
+            if not m or author != m.group(0):
+                overlay.remove(graphic)
     author_dir = os.path.join(output_dir, author)
     if args.verbose:
         print(F"creating directory {author_dir}")
